@@ -1,6 +1,8 @@
 
 require('dotenv').config()
 
+const encoding = require('encoding');
+
 const Pool = require('pg').Pool;
 // const { Client } = require('pg');
 
@@ -18,7 +20,7 @@ const conopts = {
   connectionString: process.env.DATABASE_URL,
   ssl: true,
   //sslmode: "require"
-  client_encoding: "cp850"
+  client_encoding: "utf-8"
   // sslmode: "require"
 };
 
@@ -35,7 +37,13 @@ function getBingoData() {
       return client.query(sql)
         .then(res => {
           client.release();
-          return res.rows;
+          const newrows = res.rows.map(row => {
+            let rowstoreturn = [];
+            for (let r in row) {
+              rowstoreturn[r] = encoding.convert(row[r], 'cp850', 'utf-8').toString();
+            }
+            return rowstoreturn;
+          })
         })
         .catch(err => {
           client.release();
