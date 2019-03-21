@@ -18,6 +18,7 @@ const conopts = {
   //connectionString: process.env.DATABASE_URL,
   ssl: true,
   //sslmode: "require"
+  client_encoding: "utf-8"
 };
 
 // const pool = new Pool(conopts);
