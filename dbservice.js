@@ -40,10 +40,11 @@ function getBingoData() {
           const newrows = res.rows.map(row => {
             let rowstoreturn = [];
             for (let r in row) {
-              rowstoreturn[r] = encoding.convert(row[r], 'cp850', 'utf-8').toString();
+              rowsToReturn[r] = encoding.convert(row[r], 'cp850', 'utf-8').toString();
             }
             return rowstoreturn;
           })
+          console.log(newrows);
           return newrows;
         })
         .catch(err => {
