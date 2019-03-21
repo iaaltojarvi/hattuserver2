@@ -15,10 +15,11 @@ const conopts = {
   DATABASE_URL: process.env.DATABASE_URL,
   host: process.env.HOST,
   database: process.env.DATABASE,
-  //connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL,
   ssl: true,
   //sslmode: "require"
   client_encoding: "utf-8"
+  // sslmode: "require"
 };
 
 // const pool = new Pool(conopts);
@@ -43,10 +44,42 @@ function getBingoData() {
     });
 };
 
-function getGeneratorData() {
+// function getGeneratorData() {
+//   return pool.connect()
+//     .then(client => {
+//       let sql = "SELECT * FROM generator ORDER BY RANDOM() LIMIT 1;";
+//       return client.query(sql)
+//         .then(res => {
+//           client.release();
+//           return res.rows;
+//         })
+//         .catch(err => {
+//           client.release();
+//           throw error;
+//         });
+//     });
+// };
+
+function getGeneratorAjatus() {
   return pool.connect()
     .then(client => {
-      let sql = "SELECT * FROM generator ORDER BY RANDOM() LIMIT 1;";
+      let sql = "SELECT sentence FROM generator WHERE category='ajatus' ORDER BY RANDOM() LIMIT 1;";
+      return client.query(sql)
+        .then(res => {
+          client.release();
+          return res.rows;
+        })
+        .catch(err => {
+          client.release();
+          throw error;
+        });
+    });
+};
+
+function getGeneratorTsemppi() {
+  return pool.connect()
+    .then(client => {
+      let sql = "SELECT sentence FROM generator WHERE category='tsemppi' ORDER BY RANDOM() LIMIT 1;";
       return client.query(sql)
         .then(res => {
           client.release();
@@ -88,4 +121,4 @@ const addQuote = (request, response) => {
   })
 }
 
-module.exports = { getBingoData, addQuote, getGeneratorData };
+module.exports = { getBingoData, addQuote, getGeneratorAjatus, getGeneratorTsemppi };
